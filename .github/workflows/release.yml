@@ -1,0 +1,42 @@
+name: Publish C.C. Codex sync release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository with LFS assets
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Verify the v23 theme archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum assets/app.asar.cc-skin-v23-startup-persist | awk '{print $1}')" = "c0623967d61bf1f5a2a6fd4d5a9778899d36b78e020f7b6eff3c9dc31a9f877b"
+          test "$(stat -c '%s' assets/app.asar.cc-skin-v23-startup-persist)" = "292581104"
+          grep -Eq '"spriteVersionNumber"[[:space:]]*:[[:space:]]*2' assets/pet/c-c/pet.json
+          test -s assets/pet/c-c/spritesheet.webp
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets
+          cp assets/app.asar.cc-skin-v23-startup-persist release-assets/app.asar.cc-skin-v23-startup-persist
+          cp assets/pet/c-c/pet.json release-assets/pet-c-c.json
+          cp assets/pet/c-c/spritesheet.webp release-assets/pet-c-c-spritesheet.webp
+          gh release create "${GITHUB_REF_NAME}" release-assets/* \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "C.C. Codex theme and pet ${GITHUB_REF_NAME}" \
+            --generate-notes

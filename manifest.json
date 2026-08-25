@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "packageVersion": "codex-cc-skin-v23-startup-persist",
+  "platform": "linux",
+  "theme": {
+    "asset": "app.asar.cc-skin-v23-startup-persist",
+    "sha256": "c0623967d61bf1f5a2a6fd4d5a9778899d36b78e020f7b6eff3c9dc31a9f877b",
+    "bytes": 292581104,
+    "defaultAppAsar": "/usr/lib/chatgpt/resources/app.asar"
+  },
+  "pet": {
+    "id": "c-c",
+    "displayName": "C.C.",
+    "spriteVersionNumber": 2,
+    "jsonAsset": "pet-c-c.json",
+    "spritesheetAsset": "pet-c-c-spritesheet.webp"
+  },
+  "installation": {
+    "requiresFullAppQuit": true,
+    "nativeWindowTransparency": false,
+    "notes": "The theme archive includes the embedded C.C. background images. The pet is installed separately under ~/.codex/pets/c-c."
+  }
+}
