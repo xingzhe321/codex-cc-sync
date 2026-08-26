@@ -1,4 +1,7 @@
 # C.C. Codex 主题与宠物同步包
+<img width="1360" height="817" alt="image" src="https://github.com/user-attachments/assets/b2679618-6b59-4ad1-b2cd-cdd402b6b2a5" />
+<img width="1430" height="817" alt="image" src="https://github.com/user-attachments/assets/e41f9cff-b9d7-4cdf-ad11-8efd2669cbd1" />
+
 
 这个目录提供一键安装脚本，支持两种来源：
 
