@@ -17,12 +17,12 @@ jobs:
         with:
           lfs: true
 
-      - name: Verify the v23 theme archive
+      - name: Verify the v24 theme archive
         shell: bash
         run: |
           set -euo pipefail
-          test "$(sha256sum assets/app.asar.cc-skin-v23-startup-persist | awk '{print $1}')" = "c0623967d61bf1f5a2a6fd4d5a9778899d36b78e020f7b6eff3c9dc31a9f877b"
-          test "$(stat -c '%s' assets/app.asar.cc-skin-v23-startup-persist)" = "292581104"
+          test "$(sha256sum assets/app.asar.cc-skin-v24-client-26.928 | awk '{print $1}')" = "517cfd594ff00727f0cfeac167324178a5096fe3e267810059003184ca423d56"
+          test "$(stat -c '%s' assets/app.asar.cc-skin-v24-client-26.928)" = "535038328"
           grep -Eq '"spriteVersionNumber"[[:space:]]*:[[:space:]]*2' assets/pet/c-c/pet.json
           test -s assets/pet/c-c/spritesheet.webp
 
@@ -33,7 +33,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p release-assets
-          cp assets/app.asar.cc-skin-v23-startup-persist release-assets/app.asar.cc-skin-v23-startup-persist
+          cp assets/app.asar.cc-skin-v24-client-26.928 release-assets/app.asar.cc-skin-v24-client-26.928
           cp assets/pet/c-c/pet.json release-assets/pet-c-c.json
           cp assets/pet/c-c/spritesheet.webp release-assets/pet-c-c-spritesheet.webp
           gh release create "${GITHUB_REF_NAME}" release-assets/* \

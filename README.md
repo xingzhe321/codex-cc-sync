@@ -8,10 +8,10 @@
 1. 本地离线文件：适合用 U 盘、局域网或云盘传输。
 2. GitHub Release：适合多台电脑重复安装和以后更新。
 
-当前版本是 `codex-cc-skin-v23-startup-persist`，主题 ASAR 的 SHA256 为：
+当前版本是 `codex-cc-skin-v24-client-26.928`，适配 Linux ChatGPT `26.928.20755`。主题 ASAR 的 SHA256 为：
 
 ```text
-c0623967d61bf1f5a2a6fd4d5a9778899d36b78e020f7b6eff3c9dc31a9f877b
+517cfd594ff00727f0cfeac167324178a5096fe3e267810059003184ca423d56
 ```
 
 ## 本机生成离线安装所需文件
@@ -19,7 +19,7 @@ c0623967d61bf1f5a2a6fd4d5a9778899d36b78e020f7b6eff3c9dc31a9f877b
 目标电脑只需要下面三个文件：
 
 ```text
-app.asar.cc-skin-v23-startup-persist
+app.asar.cc-skin-v24-client-26.928
 pet-c-c.json
 pet-c-c-spritesheet.webp
 ```
@@ -28,7 +28,7 @@ pet-c-c-spritesheet.webp
 
 ```bash
 mkdir -p /tmp/cc-sync-assets/pet
-cp ../app.asar.cc-skin-v23-startup-persist /tmp/cc-sync-assets/
+cp ../app.asar.cc-skin-v24-client-26.928 /tmp/cc-sync-assets/
 cp ../../cc-pet/pet.json /tmp/cc-sync-assets/pet-c-c.json
 cp ../../cc-pet/spritesheet.webp /tmp/cc-sync-assets/pet-c-c-spritesheet.webp
 ```
@@ -37,7 +37,7 @@ cp ../../cc-pet/spritesheet.webp /tmp/cc-sync-assets/pet-c-c-spritesheet.webp
 
 ```bash
 ./sync-package/install-cc-theme-pet.sh \
-  --asar-file /tmp/cc-sync-assets/app.asar.cc-skin-v23-startup-persist \
+  --asar-file /tmp/cc-sync-assets/app.asar.cc-skin-v24-client-26.928 \
   --pet-dir /tmp/cc-sync-assets
 ```
 
@@ -45,7 +45,7 @@ cp ../../cc-pet/spritesheet.webp /tmp/cc-sync-assets/pet-c-c-spritesheet.webp
 
 ```bash
 ./sync-package/install-cc-theme-pet.sh \
-  --asar-file ../app.asar.cc-skin-v23-startup-persist \
+  --asar-file ../app.asar.cc-skin-v24-client-26.928 \
   --pet-dir ../../cc-pet
 ```
 
@@ -67,25 +67,21 @@ cp ../../cc-pet/spritesheet.webp /tmp/cc-sync-assets/pet-c-c-spritesheet.webp
 
 当前 `sync-package/` 已经是一个可直接推送的仓库内容：脚本、`manifest.json`、工作流和 LFS 主题资产都在里面。工作流会在推送 `v*` 标签后自动创建 Release，因此不需要 GitHub 插件，也不需要本机安装 `gh`。
 
-需要先在本机准备 Git LFS，然后在 `sync-package/` 目录执行：
+如需在后续版本更新这个仓库，先安装 Git LFS；提交 v24 时在 `sync-package/` 目录执行：
 
 ```bash
-git init
 git lfs install --local
-git lfs track assets/app.asar.cc-skin-v23-startup-persist
 git add .
-git commit -m "Add C.C. Codex theme and pet sync package"
-git branch -M main
-git remote add origin git@github.com:xingzhe321/codex-cc-sync.git
-git push -u origin main
-git tag v23
-git push origin v23
+git commit -m "Update C.C. theme for ChatGPT 26.928"
+git push origin main
+git tag v24
+git push origin v24
 ```
 
 推送标签后，GitHub Actions 会自动创建 Release 并上传下面三个资产：
 
 ```text
-app.asar.cc-skin-v23-startup-persist
+app.asar.cc-skin-v24-client-26.928
 pet-c-c.json
 pet-c-c-spritesheet.webp
 ```
@@ -95,20 +91,20 @@ pet-c-c-spritesheet.webp
 如果不使用 Actions，也可以在当前工作区准备这三个 Release 资产：
 
 ```bash
-./prepare-release-assets.sh /tmp/cc-release-assets-v23
+./prepare-release-assets.sh /tmp/cc-release-assets-v24
 ```
 
 然后可以在 GitHub 网页的 Release 页面上传它们；如果已安装 GitHub CLI，也可以：
 
 ```bash
-gh release create v23 /tmp/cc-release-assets-v23/* \
-  --title "C.C. Codex theme and pet v23"
+gh release create v24 /tmp/cc-release-assets-v24/* \
+  --title "C.C. Codex theme and pet v24"
 ```
 
 在另一台电脑上只需要执行：
 
 ```bash
-CC_SYNC_BASE_URL="https://github.com/OWNER/REPO/releases/latest/download" \
+CC_SYNC_BASE_URL="https://github.com/xingzhe321/codex-cc-sync/releases/latest/download" \
   ./install-cc-theme-pet.sh
 ```
 
@@ -118,17 +114,17 @@ CC_SYNC_BASE_URL="https://github.com/OWNER/REPO/releases/latest/download" \
 read -rsp 'GitHub Token: ' GITHUB_TOKEN
 echo
 export GITHUB_TOKEN
-CC_SYNC_BASE_URL="https://github.com/OWNER/REPO/releases/latest/download" \
+CC_SYNC_BASE_URL="https://github.com/xingzhe321/codex-cc-sync/releases/latest/download" \
   ./install-cc-theme-pet.sh
 unset GITHUB_TOKEN
 ```
 
-普通 Git 提交不适合直接放当前 292MB 的 ASAR；GitHub 对普通 Git 对象有 100MB 单文件限制，官方建议使用 Git LFS 或 Release 资产。Release 方式更适合这个完整的应用包。
+普通 Git 提交不适合直接放当前 535MB 的 ASAR；仓库使用 Git LFS 保存主题包，并通过 GitHub Release 提供目标机下载。此 v24 严格绑定 ChatGPT 26.928.20755 的原版 ASAR 哈希；客户端更新后需重新构建和验收对应版本，安装脚本会拒绝不匹配的包。
 
 ## 注意事项
 
 - 这是 Linux 版安装脚本，默认目标路径是 `/usr/lib/chatgpt/resources/app.asar`。
-- 目标机应使用相同 Codex 应用版本；应用升级后可能覆盖主题，重新运行安装命令即可。
+- 目标机必须是 ChatGPT 26.928.20755，且原版 `app.asar` 哈希与 manifest 一致。应用升级会覆盖主题；新版本需要重新构建和验收，当前脚本会拒绝把 v24 装到其他版本。
 - 不要同步整个 `~/.config/Codex`，避免把登录态和会话数据带到另一台电脑。
 - 宠物只需要同步 `~/.codex/pets/c-c` 对应的两个文件；不要同步 QA 临时目录。
 - macOS/Windows 的 ASAR 路径和应用构建不同，不能直接使用这个 Linux ASAR；宠物 v2 资源可以复用，但主题需要按目标平台重新打包。

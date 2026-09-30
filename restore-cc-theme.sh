@@ -31,6 +31,8 @@ if ps -eo args= | awk -v binary="$app_binary" 'index($0, binary) > 0 { found=1 }
   exit 2
 fi
 
-sudo -A install -o root -g root -m 0644 "$BACKUP_ASAR" "$APP_ASAR_PATH"
+APP_OWNER="$(stat -c '%u' "$APP_ASAR_PATH")"
+APP_GROUP="$(stat -c '%g' "$APP_ASAR_PATH")"
+sudo -A install -o "$APP_OWNER" -g "$APP_GROUP" -m 0644 "$BACKUP_ASAR" "$APP_ASAR_PATH"
 echo "已恢复原始 ASAR：$APP_ASAR_PATH"
 echo "请重新启动 Codex。"

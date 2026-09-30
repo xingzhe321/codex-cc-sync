@@ -12,10 +12,10 @@ if [[ -z "$OUT_DIR" ]]; then
 fi
 
 mkdir -p "$OUT_DIR"
-cp "$THEME_ROOT/app.asar.cc-skin-v23-startup-persist" "$OUT_DIR/app.asar.cc-skin-v23-startup-persist"
+cp "$THEME_ROOT/app.asar.cc-skin-v24-client-26.928" "$OUT_DIR/app.asar.cc-skin-v24-client-26.928"
 cp "$PET_ROOT/pet.json" "$OUT_DIR/pet-c-c.json"
 cp "$PET_ROOT/spritesheet.webp" "$OUT_DIR/pet-c-c-spritesheet.webp"
 
 echo "Release 资产已准备：$OUT_DIR"
-sha256sum "$OUT_DIR/app.asar.cc-skin-v23-startup-persist"
-stat -c 'bytes=%s %n' "$OUT_DIR/app.asar.cc-skin-v23-startup-persist"
+sha256sum "$OUT_DIR/app.asar.cc-skin-v24-client-26.928"
+stat -c 'bytes=%s %n' "$OUT_DIR/app.asar.cc-skin-v24-client-26.928"
