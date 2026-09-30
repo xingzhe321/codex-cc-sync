@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "packageVersion": "codex-cc-skin-v25-sidebar-separation",
+  "packageVersion": "codex-cc-skin-v26-three-column-sidebar",
   "platform": "linux",
   "targetClientVersion": "26.928.20755",
   "theme": {
-    "asset": "app.asar.cc-skin-v25-sidebar-separation",
-    "sha256": "b899357d0d9d0170110af776f5a3a5cf2dc813c38f88c4682e98c612e2b3c15b",
-    "bytes": 535053974,
+    "asset": "app.asar.cc-skin-v26-three-column-sidebar",
+    "sha256": "8cb27db5c9fe988a0859c5bf6d4caa2bcf6f37087edddcf48960be4c559b4ebc",
+    "bytes": 535069488,
     "baseSha256": "48975e18c86f395f330d53c872a65c4bc5c848993e6b36c63ba66f9c78338beb",
     "baseBytes": 534794715,
-    "previousThemeSha256": "517cfd594ff00727f0cfeac167324178a5096fe3e267810059003184ca423d56",
-    "previousThemeBytes": 535038328,
+    "previousThemeSha256": "b899357d0d9d0170110af776f5a3a5cf2dc813c38f88c4682e98c612e2b3c15b",
+    "previousThemeBytes": 535053974,
     "defaultAppAsar": "/usr/lib/chatgpt/resources/app.asar"
   },
   "pet": {
@@ -23,6 +23,6 @@
   "installation": {
     "requiresFullAppQuit": true,
     "nativeWindowTransparency": false,
-    "notes": "The v25 archive is built for Linux ChatGPT 26.928.20755 and increases C.C. sidebar image visibility while preserving the 0.78 main surface. Pet v2 files are installed separately under ~/.codex/pets/c-c. Only the official base and the known v24 archive are accepted as install sources."
+    "notes": "The v26 archive is built for Linux ChatGPT 26.928.20755. It removes the opaque white layer from the conversation sidebar so the narrow navigation rail and wider conversation sidebar reveal one continuous C.C. background; the main surface remains at 0.78. Pet v2 files are installed separately under ~/.codex/pets/c-c. The official base and known v24/v25 archives are accepted as install sources."
   }
 }

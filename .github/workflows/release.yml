@@ -17,12 +17,12 @@ jobs:
         with:
           lfs: true
 
-      - name: Verify the v25 theme archive
+      - name: Verify the v26 theme archive
         shell: bash
         run: |
           set -euo pipefail
-          test "$(sha256sum assets/app.asar.cc-skin-v25-sidebar-separation | awk '{print $1}')" = "b899357d0d9d0170110af776f5a3a5cf2dc813c38f88c4682e98c612e2b3c15b"
-          test "$(stat -c '%s' assets/app.asar.cc-skin-v25-sidebar-separation)" = "535053974"
+          test "$(sha256sum assets/app.asar.cc-skin-v26-three-column-sidebar | awk '{print $1}')" = "8cb27db5c9fe988a0859c5bf6d4caa2bcf6f37087edddcf48960be4c559b4ebc"
+          test "$(stat -c '%s' assets/app.asar.cc-skin-v26-three-column-sidebar)" = "535069488"
           grep -Eq '"spriteVersionNumber"[[:space:]]*:[[:space:]]*2' assets/pet/c-c/pet.json
           test -s assets/pet/c-c/spritesheet.webp
 
@@ -33,7 +33,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p release-assets
-          cp assets/app.asar.cc-skin-v25-sidebar-separation release-assets/app.asar.cc-skin-v25-sidebar-separation
+          cp assets/app.asar.cc-skin-v26-three-column-sidebar release-assets/app.asar.cc-skin-v26-three-column-sidebar
           cp assets/pet/c-c/pet.json release-assets/pet-c-c.json
           cp assets/pet/c-c/spritesheet.webp release-assets/pet-c-c-spritesheet.webp
           gh release create "${GITHUB_REF_NAME}" release-assets/* \

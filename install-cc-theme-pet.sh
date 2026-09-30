@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PACKAGE_VERSION="codex-cc-skin-v25-sidebar-separation"
-ASAR_ASSET="app.asar.cc-skin-v25-sidebar-separation"
+PACKAGE_VERSION="codex-cc-skin-v26-three-column-sidebar"
+ASAR_ASSET="app.asar.cc-skin-v26-three-column-sidebar"
 PET_JSON_ASSET="pet-c-c.json"
 PET_SPRITESHEET_ASSET="pet-c-c-spritesheet.webp"
 PET_ID="c-c"
-EXPECTED_ASAR_SHA256="b899357d0d9d0170110af776f5a3a5cf2dc813c38f88c4682e98c612e2b3c15b"
-EXPECTED_ASAR_BYTES="535053974"
+EXPECTED_ASAR_SHA256="8cb27db5c9fe988a0859c5bf6d4caa2bcf6f37087edddcf48960be4c559b4ebc"
+EXPECTED_ASAR_BYTES="535069488"
 SUPPORTED_BASE_SHA256="48975e18c86f395f330d53c872a65c4bc5c848993e6b36c63ba66f9c78338beb"
 SUPPORTED_BASE_BYTES="534794715"
 SUPPORTED_PREVIOUS_SHA256="517cfd594ff00727f0cfeac167324178a5096fe3e267810059003184ca423d56"
 SUPPORTED_PREVIOUS_BYTES="535038328"
+SUPPORTED_V25_SHA256="b899357d0d9d0170110af776f5a3a5cf2dc813c38f88c4682e98c612e2b3c15b"
+SUPPORTED_V25_BYTES="535053974"
 SUPPORTED_CLIENT_VERSION="26.928.20755"
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -36,7 +38,7 @@ usage() {
 
 本地安装示例：
   ./install-cc-theme-pet.sh \
-    --asar-file /path/to/app.asar.cc-skin-v25-sidebar-separation \
+    --asar-file /path/to/app.asar.cc-skin-v26-three-column-sidebar \
     --pet-dir /path/to/outputs/cc-pet
 EOF
 }
@@ -94,10 +96,19 @@ find_default_app_asar() {
 }
 
 assert_app_quit() {
-  local app_root app_binary
+  local app_root app_binary app_running process_exe running_exe
   app_root="${APP_ASAR_PATH%/resources/app.asar}"
-  app_binary="$app_root/ChatGPT"
-  if ps -eo args= | awk -v binary="$app_binary" 'index($0, binary) > 0 { found=1 } END { exit found ? 0 : 1 }'; then
+  app_binary="$(readlink -f -- "$app_root/ChatGPT")"
+  app_running=false
+  for process_exe in /proc/[0-9]*/exe; do
+    [[ -e "$process_exe" ]] || continue
+    running_exe="$(readlink -f -- "$process_exe" 2>/dev/null || true)"
+    if [[ "$running_exe" == "$app_binary" ]]; then
+      app_running=true
+      break
+    fi
+  done
+  if [[ "$app_running" == true ]]; then
     die "检测到 Codex 仍在运行。请使用“文件 → 退出”完全退出后重新执行。"
   fi
 }
@@ -154,7 +165,7 @@ if [[ -n "$RELEASE_BASE_URL" ]]; then
   ASAR_FILE="$TEMP_DIR/$ASAR_ASSET"
   PET_SOURCE_DIR="$TEMP_DIR/pet"
   mkdir -p "$PET_SOURCE_DIR"
-  echo "正在从 Release 下载 v25 主题和 C.C. 宠物…"
+  echo "正在从 Release 下载 v26 主题和 C.C. 宠物…"
   download_asset "$RELEASE_BASE_URL/$ASAR_ASSET" "$ASAR_FILE"
   download_asset "$RELEASE_BASE_URL/$PET_JSON_ASSET" "$PET_SOURCE_DIR/$PET_JSON_ASSET"
   download_asset "$RELEASE_BASE_URL/$PET_SPRITESHEET_ASSET" "$PET_SOURCE_DIR/$PET_SPRITESHEET_ASSET"
@@ -189,10 +200,12 @@ CURRENT_ASAR_HASH="$(sha256sum "$APP_ASAR_PATH" | awk '{print $1}')"
 CURRENT_ASAR_BYTES="$(stat -c '%s' "$APP_ASAR_PATH")"
 if [[ "$CURRENT_ASAR_HASH" == "$EXPECTED_ASAR_SHA256" && "$CURRENT_ASAR_BYTES" == "$EXPECTED_ASAR_BYTES" ]]; then
   THEME_ALREADY_INSTALLED=true
-elif [[ "$CURRENT_ASAR_HASH" == "$SUPPORTED_BASE_SHA256" && "$CURRENT_ASAR_BYTES" == "$SUPPORTED_BASE_BYTES" ]] || [[ "$CURRENT_ASAR_HASH" == "$SUPPORTED_PREVIOUS_SHA256" && "$CURRENT_ASAR_BYTES" == "$SUPPORTED_PREVIOUS_BYTES" ]]; then
+elif [[ "$CURRENT_ASAR_HASH" == "$SUPPORTED_BASE_SHA256" && "$CURRENT_ASAR_BYTES" == "$SUPPORTED_BASE_BYTES" ]] ||
+     [[ "$CURRENT_ASAR_HASH" == "$SUPPORTED_PREVIOUS_SHA256" && "$CURRENT_ASAR_BYTES" == "$SUPPORTED_PREVIOUS_BYTES" ]] ||
+     [[ "$CURRENT_ASAR_HASH" == "$SUPPORTED_V25_SHA256" && "$CURRENT_ASAR_BYTES" == "$SUPPORTED_V25_BYTES" ]]; then
   THEME_ALREADY_INSTALLED=false
 else
-  die "当前 app.asar 与已验收的 ChatGPT $SUPPORTED_CLIENT_VERSION 基线不匹配，拒绝覆盖。"
+  die "当前 app.asar 与已验收的 ChatGPT $SUPPORTED_CLIENT_VERSION 官方基线或 v24/v25 主题不匹配，拒绝覆盖。"
 fi
 
 STATE_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}/codex-cc-skin"

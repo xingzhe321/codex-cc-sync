@@ -8,10 +8,10 @@
 1. 本地离线文件：适合用 U 盘、局域网或云盘传输。
 2. GitHub Release：适合多台电脑重复安装和以后更新。
 
-当前版本是 `codex-cc-skin-v25-sidebar-separation`，适配 Linux ChatGPT `26.928.20755`。v25 提高侧栏 C.C. 图像可见度，主面板保持 `0.78`。主题 ASAR 的 SHA256 为：
+当前版本是 `codex-cc-skin-v26-three-column-sidebar`，适配 Linux ChatGPT `26.928.20755`。v26 移除了新版客户端中间会话栏自带的不透明白色蒙层，使窄导航栏与中间会话栏连续显示 C.C. 背景；主面板保持 `0.78`。主题 ASAR 的 SHA256 为：
 
 ```text
-b899357d0d9d0170110af776f5a3a5cf2dc813c38f88c4682e98c612e2b3c15b
+8cb27db5c9fe988a0859c5bf6d4caa2bcf6f37087edddcf48960be4c559b4ebc
 ```
 
 ## 本机生成离线安装所需文件
@@ -19,7 +19,7 @@ b899357d0d9d0170110af776f5a3a5cf2dc813c38f88c4682e98c612e2b3c15b
 目标电脑只需要下面三个文件：
 
 ```text
-app.asar.cc-skin-v25-sidebar-separation
+app.asar.cc-skin-v26-three-column-sidebar
 pet-c-c.json
 pet-c-c-spritesheet.webp
 ```
@@ -28,7 +28,7 @@ pet-c-c-spritesheet.webp
 
 ```bash
 mkdir -p /tmp/cc-sync-assets/pet
-cp ../app.asar.cc-skin-v25-sidebar-separation /tmp/cc-sync-assets/
+cp ../app.asar.cc-skin-v26-three-column-sidebar /tmp/cc-sync-assets/
 cp ../../cc-pet/pet.json /tmp/cc-sync-assets/pet-c-c.json
 cp ../../cc-pet/spritesheet.webp /tmp/cc-sync-assets/pet-c-c-spritesheet.webp
 ```
@@ -37,7 +37,7 @@ cp ../../cc-pet/spritesheet.webp /tmp/cc-sync-assets/pet-c-c-spritesheet.webp
 
 ```bash
 ./sync-package/install-cc-theme-pet.sh \
-  --asar-file /tmp/cc-sync-assets/app.asar.cc-skin-v25-sidebar-separation \
+  --asar-file /tmp/cc-sync-assets/app.asar.cc-skin-v26-three-column-sidebar \
   --pet-dir /tmp/cc-sync-assets
 ```
 
@@ -45,7 +45,7 @@ cp ../../cc-pet/spritesheet.webp /tmp/cc-sync-assets/pet-c-c-spritesheet.webp
 
 ```bash
 ./sync-package/install-cc-theme-pet.sh \
-  --asar-file ../app.asar.cc-skin-v25-sidebar-separation \
+  --asar-file ../app.asar.cc-skin-v26-three-column-sidebar \
   --pet-dir ../../cc-pet
 ```
 
@@ -67,21 +67,21 @@ cp ../../cc-pet/spritesheet.webp /tmp/cc-sync-assets/pet-c-c-spritesheet.webp
 
 当前 `sync-package/` 已经是一个可直接推送的仓库内容：脚本、`manifest.json`、工作流和 LFS 主题资产都在里面。工作流会在推送 `v*` 标签后自动创建 Release，因此不需要 GitHub 插件，也不需要本机安装 `gh`。
 
-如需在后续版本更新这个仓库，先安装 Git LFS；提交 v25 时在 `sync-package/` 目录执行：
+如需在后续版本更新这个仓库，先安装 Git LFS；提交 v26 时在 `sync-package/` 目录执行：
 
 ```bash
 git lfs install --local
 git add .
-git commit -m "Increase C.C. sidebar image visibility"
+git commit -m "Reveal C.C. art in the conversation sidebar"
 git push origin main
-git tag v25
-git push origin v25
+git tag v26
+git push origin v26
 ```
 
 推送标签后，GitHub Actions 会自动创建 Release 并上传下面三个资产：
 
 ```text
-app.asar.cc-skin-v25-sidebar-separation
+app.asar.cc-skin-v26-three-column-sidebar
 pet-c-c.json
 pet-c-c-spritesheet.webp
 ```
@@ -91,14 +91,14 @@ pet-c-c-spritesheet.webp
 如果不使用 Actions，也可以在当前工作区准备这三个 Release 资产：
 
 ```bash
-./prepare-release-assets.sh /tmp/cc-release-assets-v25
+./prepare-release-assets.sh /tmp/cc-release-assets-v26
 ```
 
 然后可以在 GitHub 网页的 Release 页面上传它们；如果已安装 GitHub CLI，也可以：
 
 ```bash
-gh release create v25 /tmp/cc-release-assets-v25/* \
-  --title "C.C. Codex theme and pet v25"
+gh release create v26 /tmp/cc-release-assets-v26/* \
+  --title "C.C. Codex theme and pet v26"
 ```
 
 在另一台电脑上只需要执行：
@@ -119,12 +119,12 @@ CC_SYNC_BASE_URL="https://github.com/xingzhe321/codex-cc-sync/releases/latest/do
 unset GITHUB_TOKEN
 ```
 
-普通 Git 提交不适合直接放当前 535MB 的 ASAR；仓库使用 Git LFS 保存主题包，并通过 GitHub Release 提供目标机下载。v25 适配 ChatGPT 26.928.20755，安装脚本只接受精确匹配的官方 ASAR 或已知 v24 主题包；客户端更新后需重新构建和验收对应版本。
+普通 Git 提交不适合直接放当前 535MB 的 ASAR；仓库使用 Git LFS 保存主题包，并通过 GitHub Release 提供目标机下载。v26 适配 ChatGPT 26.928.20755，安装脚本只接受精确匹配的官方 ASAR 或已验收的 v24/v25 主题包；客户端更新后需重新构建和验收对应版本。
 
 ## 注意事项
 
 - 这是 Linux 版安装脚本，默认目标路径是 `/usr/lib/chatgpt/resources/app.asar`。
-- 目标机必须是 ChatGPT 26.928.20755，且 `app.asar` 哈希与 manifest 中的官方基线或 v24 主题哈希一致。应用升级会覆盖主题；新版本需要重新构建和验收，当前脚本会拒绝把 v25 装到其他版本。
+- 目标机必须是 ChatGPT 26.928.20755，且 `app.asar` 哈希与 manifest 中的官方基线或 v24/v25 主题哈希一致。应用升级会覆盖主题；新版本需要重新构建和验收，当前脚本会拒绝把 v26 装到其他版本。
 - 不要同步整个 `~/.config/Codex`，避免把登录态和会话数据带到另一台电脑。
 - 宠物只需要同步 `~/.codex/pets/c-c` 对应的两个文件；不要同步 QA 临时目录。
 - macOS/Windows 的 ASAR 路径和应用构建不同，不能直接使用这个 Linux ASAR；宠物 v2 资源可以复用，但主题需要按目标平台重新打包。
