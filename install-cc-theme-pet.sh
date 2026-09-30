@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PACKAGE_VERSION="codex-cc-skin-v24-client-26.928"
-ASAR_ASSET="app.asar.cc-skin-v24-client-26.928"
+PACKAGE_VERSION="codex-cc-skin-v25-sidebar-separation"
+ASAR_ASSET="app.asar.cc-skin-v25-sidebar-separation"
 PET_JSON_ASSET="pet-c-c.json"
 PET_SPRITESHEET_ASSET="pet-c-c-spritesheet.webp"
 PET_ID="c-c"
-EXPECTED_ASAR_SHA256="517cfd594ff00727f0cfeac167324178a5096fe3e267810059003184ca423d56"
-EXPECTED_ASAR_BYTES="535038328"
+EXPECTED_ASAR_SHA256="b899357d0d9d0170110af776f5a3a5cf2dc813c38f88c4682e98c612e2b3c15b"
+EXPECTED_ASAR_BYTES="535053974"
 SUPPORTED_BASE_SHA256="48975e18c86f395f330d53c872a65c4bc5c848993e6b36c63ba66f9c78338beb"
 SUPPORTED_BASE_BYTES="534794715"
+SUPPORTED_PREVIOUS_SHA256="517cfd594ff00727f0cfeac167324178a5096fe3e267810059003184ca423d56"
+SUPPORTED_PREVIOUS_BYTES="535038328"
 SUPPORTED_CLIENT_VERSION="26.928.20755"
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -34,7 +36,7 @@ usage() {
 
 本地安装示例：
   ./install-cc-theme-pet.sh \
-    --asar-file /path/to/app.asar.cc-skin-v24-client-26.928 \
+    --asar-file /path/to/app.asar.cc-skin-v25-sidebar-separation \
     --pet-dir /path/to/outputs/cc-pet
 EOF
 }
@@ -152,7 +154,7 @@ if [[ -n "$RELEASE_BASE_URL" ]]; then
   ASAR_FILE="$TEMP_DIR/$ASAR_ASSET"
   PET_SOURCE_DIR="$TEMP_DIR/pet"
   mkdir -p "$PET_SOURCE_DIR"
-  echo "正在从 Release 下载 v24 主题和 C.C. 宠物…"
+  echo "正在从 Release 下载 v25 主题和 C.C. 宠物…"
   download_asset "$RELEASE_BASE_URL/$ASAR_ASSET" "$ASAR_FILE"
   download_asset "$RELEASE_BASE_URL/$PET_JSON_ASSET" "$PET_SOURCE_DIR/$PET_JSON_ASSET"
   download_asset "$RELEASE_BASE_URL/$PET_SPRITESHEET_ASSET" "$PET_SOURCE_DIR/$PET_SPRITESHEET_ASSET"
@@ -187,7 +189,7 @@ CURRENT_ASAR_HASH="$(sha256sum "$APP_ASAR_PATH" | awk '{print $1}')"
 CURRENT_ASAR_BYTES="$(stat -c '%s' "$APP_ASAR_PATH")"
 if [[ "$CURRENT_ASAR_HASH" == "$EXPECTED_ASAR_SHA256" && "$CURRENT_ASAR_BYTES" == "$EXPECTED_ASAR_BYTES" ]]; then
   THEME_ALREADY_INSTALLED=true
-elif [[ "$CURRENT_ASAR_HASH" == "$SUPPORTED_BASE_SHA256" && "$CURRENT_ASAR_BYTES" == "$SUPPORTED_BASE_BYTES" ]]; then
+elif [[ "$CURRENT_ASAR_HASH" == "$SUPPORTED_BASE_SHA256" && "$CURRENT_ASAR_BYTES" == "$SUPPORTED_BASE_BYTES" ]] || [[ "$CURRENT_ASAR_HASH" == "$SUPPORTED_PREVIOUS_SHA256" && "$CURRENT_ASAR_BYTES" == "$SUPPORTED_PREVIOUS_BYTES" ]]; then
   THEME_ALREADY_INSTALLED=false
 else
   die "当前 app.asar 与已验收的 ChatGPT $SUPPORTED_CLIENT_VERSION 基线不匹配，拒绝覆盖。"

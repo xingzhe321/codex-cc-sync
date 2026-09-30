@@ -1,14 +1,16 @@
 {
   "schemaVersion": 1,
-  "packageVersion": "codex-cc-skin-v24-client-26.928",
+  "packageVersion": "codex-cc-skin-v25-sidebar-separation",
   "platform": "linux",
   "targetClientVersion": "26.928.20755",
   "theme": {
-    "asset": "app.asar.cc-skin-v24-client-26.928",
-    "sha256": "517cfd594ff00727f0cfeac167324178a5096fe3e267810059003184ca423d56",
-    "bytes": 535038328,
+    "asset": "app.asar.cc-skin-v25-sidebar-separation",
+    "sha256": "b899357d0d9d0170110af776f5a3a5cf2dc813c38f88c4682e98c612e2b3c15b",
+    "bytes": 535053974,
     "baseSha256": "48975e18c86f395f330d53c872a65c4bc5c848993e6b36c63ba66f9c78338beb",
     "baseBytes": 534794715,
+    "previousThemeSha256": "517cfd594ff00727f0cfeac167324178a5096fe3e267810059003184ca423d56",
+    "previousThemeBytes": 535038328,
     "defaultAppAsar": "/usr/lib/chatgpt/resources/app.asar"
   },
   "pet": {
@@ -21,6 +23,6 @@
   "installation": {
     "requiresFullAppQuit": true,
     "nativeWindowTransparency": false,
-    "notes": "The v24 archive is built for Linux ChatGPT 26.928.20755 and includes both C.C. backgrounds. Pet v2 files are installed separately under ~/.codex/pets/c-c. A different app.asar hash is rejected to avoid downgrading or breaking another client build."
+    "notes": "The v25 archive is built for Linux ChatGPT 26.928.20755 and increases C.C. sidebar image visibility while preserving the 0.78 main surface. Pet v2 files are installed separately under ~/.codex/pets/c-c. Only the official base and the known v24 archive are accepted as install sources."
   }
 }
